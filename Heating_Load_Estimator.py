@@ -1,144 +1,237 @@
-import matplotlib.pyplot as plt             # for plotting the variables
-from matplotlib import cm                   # for creating a colormap
-from matplotlib.ticker import LinearLocator # to create tickers in the plots
-import matplotlib.animation as animation    # to create and save an anima..
-from matplotlib.animation import FuncAnimation # specific animation package
-import numpy as np                          # for handling the numbers
-from mpl_toolkits import mplot3d            # for creating a 3d plot
-from IPython.display import display, clear_output
-                                            # to see a nice anima. in the notebook environment
+import numpy as np
 
-x0 = 0                                     # the initial point in space domian
-x_max = 1                                  # the final foint in the space domian
-nx = 20                                    # the number of points in the space discretization
+""" Heating Load Calculaion :
+Q total = Q conductive + Q ventilation + Q miscellaneous"""
 
-t0 = 0                                     # initil time
-t_max=15                                   # final simulation time
-nt = 1000                                  # number of time steps
+construction_leakage_level = int(input('please insert level of construction'))
+design_temperature = int(input('please insert level of construction'))
+exposed_surface_area_situation = int(input('please insert level of construction'))
+height = int(input('please insert level of construction'))
+envelopes_situation = int(input('please insert level of construction'))
 
 
-def stability_check(dt, dx, alpha):
-    """
-    The function checks the stability of the explicit scheme by estimating is dt*alpha/dx^2 is less than 0.5 for the choice of \
-    space and time discretization
-    """
-    F = (dt / np.power(dx, 2)) * alpha
-    assert F < 0.5
-    return F
+class ConductiveHeatingLoad:
 
-def init_space(x0, x_max,nx):
-    """
-    Generates the space domain for simulation
-    """
-    dx = (x_max-x0)/nx
-    x = np.linspace(x0,x_max,nx)
-    return dx, x
+    def __int__(self, indoors_temperature, outdoors_temperature, envelop_area, insulating_conductivity,
+                insulating_thickness, indoors_surface_coefficient, outdoors_surface_coefficient,
+                thermal_resistance_air, total_heating_resistance, heating_insulation_resistance):
 
-def init_time(t0, t_max,nt):
-    "generates the time domain for simulation"
-    dt = (t_max-t0)/nt
-    t = np.linspace(t0,t_max,nt)
-    return dt, t
+        self.IndoorsDesignTemperature = indoors_temperature
+        self.OutdoorsTemperature = outdoors_temperature
+        self.EnvelopArea = envelop_area
+        self.InsulateCoefficient = list(insulating_conductivity)
+        self.InsulatingThickness = list(insulating_thickness)
+        self.IndoorsSurfaceCoefficient = indoors_surface_coefficient
+        self.OutdoorsSurfaceCoefficient = outdoors_surface_coefficient
+        self.ThermalResistanceAir = thermal_resistance_air
+        self.TotalHeatingResistance = total_heating_resistance
+        self.HeatingInsulationResistance = heating_insulation_resistance
 
-def set_field(nx,nt):
-    "Genrates a two dimensional field for the variable in space and time"
-    p = np.zeros(shape=(nx,nt))
-    return p
+    def conductive_load(self):
+        q_conductivity = self.u_factor * np.array(self.EnvelopArea) * \
+                              (self.IndoorsDesignTemperature - self.OutdoorsTemperature)
 
-pi=1     # 1 MPa
-def set_ic(pi):
-    """
-    This gives a very simplistic initial condition
-    """
-    p = np.zeros(shape=(nx, nt))
-    p.fill(pi)
-    return p
+        return q_conductivity
 
-def set_bc(p0,pL):
-    """
-    constant boundary condition is set using this function
-    """
-    p = np.zeros(shape=(nx, nt))
-    p[0,:]=p0
-    p[nx-1,:]=pL
-    return p[0,:], p[nx-1,:]
+    def u_factor(self):
+        if self.HeatingInsulationResistance == 0:
+            insulate_thickness = np.array(self.InsulatingThickness)
+            insulate_coefficient = np.array(self.InsulateCoefficient)
+            heating_insulation_resistance = sum(insulate_thickness / insulate_coefficient)
+        else:
+            heating_insulation_resistance = self.HeatingInsulationResistance
 
-def FDM_1D(p, nx, nt, F):
-    """
-    The function runs a loop utilizing explicit marching in time.
-    """
-    j=0;i=0
-    for i in range(0,nt-1):
-        for j in range(1,nx-1):
-            p[j,i+1] = ((F)*(p[j+1,i]-2*p[j,i]+p[j-1,i])+p[j,i])
-    return p
+        total_heating_resistance = (1/self.IndoorsSurfaceCoefficient) + heating_insulation_resistance + \
+                                        self.ThermalResistanceAir + (1/self.OutdoorsSurfaceCoefficient)
+
+        heat_transfer_coefficient = 1 / total_heating_resistance
+
+        return np.array(heat_transfer_coefficient)
 
 
-# Executing the written functions in order
+class InfiltrationHeatingLoad:
+    def __init__(self, building_exposed_area, air_temperature_difference, room_humidity_difference, area_unit_leakage,
+                 infiltration_driving_force, infiltration_air_flow_rate):
 
-dx, x = init_space(x0, x_max, nx)
-dt, t = init_time(t0, t_max, nt)
-F = stability_check(dt, dx,alpha=1)
-p = set_field(nx, nt)
-# p = set_ic(pi)
-p[0, :], p[nx - 1, :] = set_bc(2, 0)
-p = FDM_1D(p, nx, nt, F)
+        self.BuildingExposedArea = building_exposed_area
+        self.AirTemperatureDifference = air_temperature_difference
+        self.HumidityDifference = room_humidity_difference
+        self.Area_Unit_Leakage = area_unit_leakage
+        self.InfiltrationDriving_force = infiltration_driving_force
+        self.InfiltrationAirFlowRate = infiltration_air_flow_rate
 
-# -------------------------Information to be printed after simulation-------------
-print("Simulation Message: \n\nThe space domain is set between:", x0, "and", x_max, " unit and the simulation time \
-is set for a t max of: ", t_max, "sec.\nThe value of space increment is:", dx,
-      "unit and the value of time increment is:", dt, "sec\n\n" 
-                                                      "Checked the stability condition for explicit scheme,\n\
-                                                The value of F is:", np.round(F, 2), "for stability of the Explicit solution to work,\
-the value of F should be less than 0.5")
+    def air_temperature_diff(self, indoor_temperature, outdoor_temperature):
+        self.AirTemperatureDifference = indoor_temperature - outdoor_temperature
+        return self.AirTemperatureDifference
 
-assert p.shape[0] == x.shape[0] and p.shape[1] == t.shape[0], f"The shape of p and x does not match: {p.shape[1]}"
+    def area_leakage(self):
+        if construction_leakage_level == 1:
+            self.Area_Unit_Leakage = 0.7
+        elif construction_leakage_level == 2:
+            self.Area_Unit_Leakage = 1.4
+        elif construction_leakage_level == 3:
+            self.Area_Unit_Leakage = 2.8
+        elif construction_leakage_level == 4:
+            self.Area_Unit_Leakage = 5.6
+        else:
+            self.Area_Unit_Leakage = 10.4
+        return self.Area_Unit_Leakage
 
-# Plotting the solution in 2-D
-x, t = np.meshgrid(x, t)
+    def infiltration_driving_force_value(self):
+        if design_temperature == 1:
+            if height == 1:
+                self.InfiltrationDriving_force = 0.06
+            elif height == 2:
+                self.InfiltrationDriving_force = 0.061
+            elif height == 3:
+                self.InfiltrationDriving_force = 0.065
+            elif height == 4:
+                self.InfiltrationDriving_force = 0.069
+            elif height == 5:
+                self.InfiltrationDriving_force = 0.072
+            elif height == 6:
+                self.InfiltrationDriving_force = 0.075
+            else:
+                self.InfiltrationDriving_force = 0.079
+        elif design_temperature == 2:
+            if height == 1:
+                self.InfiltrationDriving_force = 0.031
+            elif height == 2:
+                self.InfiltrationDriving_force = 0.032
+            elif height == 3:
+                self.InfiltrationDriving_force = 0.034
+            elif height == 4:
+                self.InfiltrationDriving_force = 0.036
+            elif height == 5:
+                self.InfiltrationDriving_force = 0.039
+            elif height == 6:
+                self.InfiltrationDriving_force = 0.041
+            else:
+                self.InfiltrationDriving_force = 0.043
+        elif design_temperature == 3:
+            if height == 1:
+                self.InfiltrationDriving_force = 0.035
+            elif height == 2:
+                self.InfiltrationDriving_force = 0.038
+            elif height == 3:
+                self.InfiltrationDriving_force = 0.042
+            elif height == 4:
+                self.InfiltrationDriving_force = 0.046
+            elif height == 5:
+                self.InfiltrationDriving_force = 0.050
+            elif height == 6:
+                self.InfiltrationDriving_force = 0.051
+            else:
+                self.InfiltrationDriving_force = 0.058
+        elif design_temperature == 4:
+            if height == 1:
+                self.InfiltrationDriving_force = 0.040
+            elif height == 2:
+                self.InfiltrationDriving_force = 0.043
+            elif height == 3:
+                self.InfiltrationDriving_force = 0.049
+            elif height == 4:
+                self.InfiltrationDriving_force = 0.055
+            elif height == 5:
+                self.InfiltrationDriving_force = 0.061
+            elif height == 6:
+                self.InfiltrationDriving_force = 0.068
+            else:
+                self.InfiltrationDriving_force = 0.074
+        return self.InfiltrationDriving_force
 
-fig, axs = plt.subplots(1,1,figsize=(15,10),subplot_kw={"projection":'3d'})
-surf=axs.plot_surface(x, t, np.transpose(p),cmap='seismic', edgecolor='none')
-# Customize the z axis.
-axs.set_zlim(0, 4)
-axs.zaxis.set_major_locator(LinearLocator(5))
-# Add a color bar which maps values to colors.
-fig.colorbar(surf, shrink=0.5, aspect=5)
-axs.set_xlabel('Length (m)')
-axs.set_ylabel('Time (sec)')
-axs.set_zlabel('Pressure (MPa)')
-axs.set_title('surface')
-plt.savefig("1D Pressure Diffusion.jpeg")
+    def evaluation_exposed_surface_area(self):
+        if envelopes_situation == 1:
+            self.BuildingExposedArea = int(input('Please Insert Gross surface area'))
+        if envelopes_situation == 2:
+            self.BuildingExposedArea = int(input('Please Insert Ceiling or wall area  Gross wall area (including '
+                                                 'fenestration area Exclude Roof area'))
+        if envelopes_situation == 3:
+            self.BuildingExposedArea = int(input('Please Insert Common wall area'))
+        if envelopes_situation == 4:
+            self.BuildingExposedArea = int(input('Please Insert Gross area Exclude Exterior wall area Exclude '
+                                                 'Exterior wall rea'))
+        if envelopes_situation == 5:
+            self.BuildingExposedArea = int(input('Please Insert Floor area Exclude Crawlspace wall area'))
+        if envelopes_situation == 6:
+            self.BuildingExposedArea = int(input('Please Insert Crawlspace wall area Exclude Floor area'))
+        if envelopes_situation == 7:
+            self.BuildingExposedArea = int(input('Please Insert Above-grade basement wall area Exclude Floor area'))
+        else:
+            self.BuildingExposedArea = int(input('Please Insert Gross surface area Exclude Slab area'))
+        return self.Area_Unit_Leakage
 
-# Plotting the simulation of changes in pressure with time (Animation)
+    def infiltration_rate_flow(self):
+        self.InfiltrationAirFlowRate = self.Area_Unit_Leakage * self.BuildingExposedArea *\
+                                       self.InfiltrationDriving_force
+        return self.InfiltrationAirFlowRate
 
-dx, x = init_space(x0, x_max, nx)
-pt = np.transpose(p)
+    def sensible_heating_load(self, specific_heat_of_dry_air=0.24, air_density=1.2):
+        sensible_heat = specific_heat_of_dry_air * air_density * self.InfiltrationAirFlowRate *\
+                        self.AirTemperatureDifference
+        return sensible_heat
 
-fig = plt.figure()
-ax1 = fig.add_subplot(1, 1, 1)
-# add another axes at the top left corner of the figure
-axtext = fig.add_axes([0.0, 0.95, 0.1, 0.05])
-# turn the axis labels/spines/ticks off
-axtext.axis("off")
+    def humidity_diff(self, indoor_humidity, outdoor_humidity):
+        self.HumidityDifference = indoor_humidity - outdoor_humidity
+        return self.HumidityDifference
 
-ax1.set_ylabel("Pressure, MPa")
-ax1.set_xlabel("Length, m")
-ax1.set_title("1D Diffusion Simulation")
-timeer = ax1.annotate("Timer", xy=(0.8, 2), xytext=(0.5, 2))
-time = ax1.annotate(0, xy=(0.6, 2), xytext=(0.6, 2))
-l, = ax1.plot(x[:], p[:, 0], "r--", lw=4)
-
-
-# animate = lambda i: l.set_ydata(p[:,i]); time.set_text(i);
-
-def animate(i):
-    l.set_ydata(p[:, i])
-    time.set_text(i)
-    return l, time
+    def lateral_heating_load(self, latent_heat_vaporization_water0c=597, air_density=1.2):
+        lateral_heat = latent_heat_vaporization_water0c * air_density * self.InfiltrationAirFlowRate * \
+                        self.HumidityDifference
+        return lateral_heat
 
 
-for i in range(p.shape[1] - 800):
-    animate(i)
-    clear_output(wait=True)
-    display(fig)
+class VentilationHeatingLoad:
+
+    def __init__(self, building_surface_area, building_floor_area, air_temperature_difference, room_humidity_difference,
+                 required_ventilation_flow_rate, number_bedroom):
+
+        self.BuildingSurfaceArea = building_surface_area  # all above-grade surface area that separates
+        # the outdoors from conditioned or semi-conditioned space
+        self.BuildingFloorArea = building_floor_area
+        self.AirTemperatureDifference = air_temperature_difference
+        self.HumidityDifference = room_humidity_difference
+        self.RequiredVentilationFlowRate = required_ventilation_flow_rate
+        self.NumberBedroom = number_bedroom
+
+    def air_temperature_diff(self, indoor_temperature, outdoor_temperature):
+        self.AirTemperatureDifference = indoor_temperature - outdoor_temperature
+        return self.AirTemperatureDifference
+
+    def ventilation_flow_rate(self):
+        self.RequiredVentilationFlowRate = (0.15 * self.BuildingFloorArea) + 3.5*(self.NumberBedroom+1)
+
+    def sensible_ventilation_heating_load(self, specific_heat_of_dry_air=0.24, air_density=1.2):
+        sensible_heat = specific_heat_of_dry_air * air_density * self.RequiredVentilationFlowRate * \
+                        self.AirTemperatureDifference
+        return sensible_heat
+
+    def humidity_diff(self, indoor_humidity, outdoor_humidity):
+        self.HumidityDifference = indoor_humidity - outdoor_humidity
+        return self.HumidityDifference
+
+    def lateral_ventilation_heating_load(self, latent_heat_vaporization_water0c=597, air_density=1.2):
+        lateral_heat = latent_heat_vaporization_water0c * air_density * self.RequiredVentilationFlowRate * \
+                       self.HumidityDifference
+        return lateral_heat
+
+
+class MiscellaneousHeatingLoad:
+    def __init__(self, building_surface_area, depth_foundation_below_grade, path_length_wall_below_grade,
+                 wall_depth, shortest_width_house, heat_loss_coefficient):
+
+        self.BuildingSurfaceArea = building_surface_area  # all above-grade surface area that separates
+        # the outdoors from conditioned or semi-conditioned space
+        self.DepthFoundationBelowGrade = depth_foundation_below_grade
+        self.PathLengthWallBelowGrade = path_length_wall_below_grade
+        self.WallDepth = wall_depth
+        self.ShortestWidthHouse = shortest_width_house
+        self.HeatLossCoefficient = heat_loss_coefficient
+
+    def heat_loss_below_grade(self):
+        pass
+
+    def heat_loss_through_basement(self):
+        pass
+
+
