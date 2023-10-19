@@ -511,15 +511,15 @@ class Ui_Dialog(object):
 
     def delta_temperature(self):
         self.dt = float(self.lineEdit.text()) - float(self.lineEdit_2.text())
-        return self.dt
+        return abs(self.dt)
 
     def delta_design_temperature(self):
         self.dtd = float(self.lineEdit_3.text()) - float(self.lineEdit_4.text())
-        return self.dtd
+        return abs(self.dtd)
 
     def delta_humidity(self):
         self.dw = float(self.lineEdit_5.text()) - float(self.lineEdit_6.text())
-        return self.dw
+        return abs(self.dw)
 
     def total_heatingload(self):
         self.infiltration_load = self.lineEdit_11.text()
