@@ -7,7 +7,7 @@ There are lots of commercial software to do it, but most need to simulate the bu
 In addition, this app is operational in the estimation of the effect of fenestration sizes, types, and insulation layers of envelopes of the buildings in decreasing or increasing the heating load.
 
 #Installation
-You can readily run the main.py file with a Python compiler. If you need the main.exe file please send an [email] (malihehjahanbakhsh.eng@gmail.com)
+You can readily run the main.py file with a Python compiler. If you need the main.exe file please send an (malihehjahanbakhsh.eng@gmail.com)
 
 #Instruction
 [Video Instruction] ()
