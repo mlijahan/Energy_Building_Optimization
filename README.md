@@ -10,7 +10,7 @@ In addition, this app is operational in the estimation of the effect of fenestra
 You can readily run the main.py file with a Python compiler. If you need the main.exe file please send an Email malihehjahanbakhsh.eng@gmail.com
 
 #Instruction
-[Video Instruction] ()
+[Video Instruction] 
 
 #About Heating Load Calculation
 
