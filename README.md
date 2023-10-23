@@ -12,7 +12,7 @@ You can readily run the main.py file with a Python compiler. If you need the mai
 #Instruction
 [Video Instruction] ()
 
-#About Impact Load Calculation
+#About Heating Load Calculation
 
 
 
