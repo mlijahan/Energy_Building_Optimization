@@ -1569,12 +1569,15 @@ if __name__ == "__main__":
     dialog_windowdoors = QtWidgets.QDialog()
     window_door.setupUi(dialog_windowdoors)
     window_door.pushButton.clicked.connect(lambda: dialog_door.exec())
+    window_door.pushButton.clicked.connect(lambda: dialog_windowdoors.close())
     window_door.pushButton_2.clicked.connect(lambda: dialog_afenestration_ufactor.exec())
+    window_door.pushButton_2.clicked.connect(lambda: dialog_windowdoors.close())
     ##====================================================================== Select door type
     door = d.Ui_Dialog()
     dialog_door = QtWidgets.QDialog()
     door.setupUi(dialog_door)
     door.pushButton_10.clicked.connect(lambda: ui.select_door_type())
+    door.pushButton_10.clicked.connect(lambda: dialog_door.close())
     door.pushButton_9.clicked.connect(lambda: door.reset_door_type())
     ##====================================================================== door1 u factor Calculation and Show
     door01 = d1.Ui_Dialog()
