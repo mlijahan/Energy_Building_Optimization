@@ -53,9 +53,7 @@ c.execute(""" CREATE TABLE if not exists fenestration_properties(
     fenestration_id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
     fenestration_name text,
     fenestration_area_m2 real,
-    installation_area_m2 real,
-    fenestration_u real,
-    installation_u real
+    fenestration_u real
     )
     """)
 
@@ -686,19 +684,6 @@ class Ui_rfr(object):
 
         conn.close()
 
-    # def delet_zone_database(self):# Create a database or connect  to one
-    #     conn = sqlite3.connect('heating_load.db')
-    #     # Create a cursor
-    #     c = conn.cursor()
-    #
-    #     # Delete everything in the database table
-    #     c.execute('DELETE FROM zone_properties')
-    #
-    #     conn.commit()
-    #
-    #     conn.close()
-    #     self.comboBox.clear()
-
     # Grab all the items from the database
     def grab_envelope(self):
         # Create a database or connect  to one
@@ -765,19 +750,6 @@ class Ui_rfr(object):
 
         conn.close()
 
-    # def delet_envelopes_database(self):# Create a database or connect  to one
-    #     conn = sqlite3.connect('heating_load.db')
-    #     # Create a cursor
-    #     c = conn.cursor()
-    #
-    #     # Delete everything in the database table
-    #     c.execute('DELETE FROM envelopes_properties')
-    #
-    #     conn.commit()
-    #
-    #     conn.close()
-    #     envelope.comboBox_2.clear()
-
     # Grab all the items from the database
     def grab_insullation(self):
         # Create a database or connect  to one
@@ -837,19 +809,6 @@ class Ui_rfr(object):
 
         conn.close()
 
-    # def delet_insulation_database(self):# Create a database or connect  to one
-    #     conn = sqlite3.connect('heating_load.db')
-    #     # Create a cursor
-    #     c = conn.cursor()
-    #
-    #     # Delete everything in the database table
-    #     c.execute('DELETE FROM materialsinsulations_properties')
-    #
-    #     conn.commit()
-    #
-    #     conn.close()
-    #     add_layers.comboBox.clear()
-
     # Grab all the items from the database
     def grab_fenestration(self):
         # Create a database or connect  to one
@@ -865,22 +824,16 @@ class Ui_rfr(object):
         record1 = [item[1] for item in records]
         record2 = [item[2] for item in records]
         record3 = [item[3] for item in records]
-        record4 = [item[4] for item in records]
-        record5 = [item[5] for item in records]
 
         self.fenestration_name = record1[0]
         self.fenestration_area = record2[0]
-        self.installation_area = record3[0]
-        self.fenestration_u_factor = record4[0]
-        self.installation_u_factor = record5[0]
+        self.fenestration_u_factor = record3[0]
 
         self.ROW = fenestrations.tableWidget.rowCount()
         fenestrations.tableWidget.insertRow(self.ROW)
         fenestrations.tableWidget.setItem(self.ROW, 0, QTableWidgetItem(str(self.fenestration_name)))
         fenestrations.tableWidget.setItem(self.ROW, 1, QTableWidgetItem(str(self.fenestration_area)))
         fenestrations.tableWidget.setItem(self.ROW, 2, QTableWidgetItem(str(self.fenestration_u_factor)))
-        fenestrations.tableWidget.setItem(self.ROW, 3, QTableWidgetItem(str(self.installation_area)))
-        fenestrations.tableWidget.setItem(self.ROW, 4, QTableWidgetItem(str(self.installation_u_factor)))
 
         conn.commit()
 
@@ -892,36 +845,19 @@ class Ui_rfr(object):
         # Create a cursor
         c = conn.cursor()
 
-        # Delete everything in the database table
-        # c.execute('DELETE FROM fenestration_properties')
-
         # Create Blank Dictionary To Hold Fenestration's Properties Items
         items = fenestration_area.fenestration_properties_list()
 
         # Add stuf to the table
         c.execute("INSERT INTO fenestration_properties (fenestration_name,fenestration_area_m2,"
-                      "installation_area_m2,fenestration_u,installation_u) VALUES (?,?,?,?,?)",
+                      "fenestration_u) VALUES (?,?,?,?,?)",
 
-                      (items[0], items[1], items[2], items[3], items[4])
+                      (items[0], items[1], items[2])
                       )
 
         conn.commit()
 
         conn.close()
-
-    # def delet_fenestration_database(self):# Create a database or connect  to one
-    #     conn = sqlite3.connect('heating_load.db')
-    #     # Create a cursor
-    #     c = conn.cursor()
-    #
-    #     # Delete everything in the database table
-    #     c.execute('DELETE FROM fenestration_properties')
-    #
-    #     conn.commit()
-    #
-    #     conn.close()
-    #     fenestrations.comboBox.clear()
-
 
     def total_bilding_heatingload(self):
         self.building_heatingload = []
@@ -1135,14 +1071,9 @@ class Ui_rfr(object):
         self.net_envelope = add_envelopes_properties.lineEdit.setText(str(add_envelopes.enevelope_area()))
         return self.net_envelope
 
-    def fenestration_u_factors(self):
-        self.fenstration_u_fact = fenestration_area.lineEdit_2.setText(str(fenestration_ufactor.u_factor_glazing_func()))
-        return self.fenstration_u_fact
-
     def fenestration_installation_u_factors(self):
-        self.installation_u_fact = fenestration_area.lineEdit_5.setText(str(fenestration_ufactor.u_factor_installation_func()))
+        self.installation_u_fact = fenestration_area.lineEdit_2.setText(str(fenestration_ufactor.u_factor_installation_func()))
         return self.installation_u_fact
-
 
     def fenestration_area_u(self):
         self.u_fenestration = fenestrations.lineEdit_2.setText(str(fenestrations.total_u_factor_per_area()))
@@ -1190,8 +1121,8 @@ class Ui_rfr(object):
             pass
 
     def chek_fenestration(self, class1_1):
-        t1, t2, t3, t4, t5 = class1_1.check_line()
-        if (t1 != -1 and t2 != -1 and t3 != -1 and t4 != -1 and t5 != -1):
+        t1, t2, t3 = class1_1.check_line()
+        if (t1 != -1 and t2 != -1 and t3 != -1):
             fenestrations.comboBox.addItem(str(t1))
         else:
             pass
@@ -1427,9 +1358,7 @@ if __name__ == "__main__":
     dialog_afenestration_ufactor = QtWidgets.QDialog()
     fenestration_ufactor.setupUi(dialog_afenestration_ufactor)
     fenestration_area.pushButton_5.clicked.connect(lambda: dialog_windowdoors.exec())
-    fenestration_ufactor.pushButton_10.clicked.connect(lambda: ui.fenestration_u_factors())
     fenestration_ufactor.pushButton_10.clicked.connect(lambda: ui.fenestration_installation_u_factors())
-    fenestration_ufactor.pushButton_9.clicked.connect(lambda: fenestration_ufactor.reset_fenestration_u_factor_glass())
     fenestration_ufactor.pushButton_9.clicked.connect(lambda: fenestration_ufactor.reset_fenestration_u_factor_installation())
     ###====================================================== Add Indoor surface heat transfer (kcal/m2hC)
     add_hi = hi.Ui_Dialog()

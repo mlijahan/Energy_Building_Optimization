@@ -421,106 +421,6 @@ class Ui_Dialog(object):
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
-    def u_factor_glazing_func(self):
-        self.glazing_type = self.comboBox.currentIndex()
-        if self.glazing_type == 0:
-            self.ufactor_glazing = 5.91
-        elif self.glazing_type == 1:
-            self.ufactor_glazing = 5
-        elif self.glazing_type == 2:
-            self.ufactor_glazing = 5.45
-        elif self.glazing_type == 3:
-            self.ufactor_glazing = 3.12
-        elif self.glazing_type == 4:
-            self.ufactor_glazing = 2.73
-        elif self.glazing_type == 5:
-            self.ufactor_glazing = 2.9
-        elif self.glazing_type == 6:
-            self.ufactor_glazing = 2.56
-        elif self.glazing_type == 7:
-            self.ufactor_glazing = 2.95
-        elif self.glazing_type == 8:
-            self.ufactor_glazing = 2.5
-        elif self.glazing_type == 9:
-            self.ufactor_glazing = 2.67
-        elif self.glazing_type == 10:
-            self.ufactor_glazing = 2.33
-        elif self.glazing_type == 11:
-            self.ufactor_glazing = 2.78
-        elif self.glazing_type == 12:
-            self.ufactor_glazing = 2.27
-        elif self.glazing_type == 13:
-            self.ufactor_glazing = 2.44
-        elif self.glazing_type == 14:
-            self.ufactor_glazing = 2.04
-        elif self.glazing_type == 15:
-            self.ufactor_glazing = 2.56
-        elif self.glazing_type == 16:
-            self.ufactor_glazing = 1.99
-        elif self.glazing_type == 17:
-            self.ufactor_glazing = 2.16
-        elif self.glazing_type == 18:
-            self.ufactor_glazing = 1.70
-        elif self.glazing_type == 19:
-            self.ufactor_glazing = 2.39
-        elif self.glazing_type == 20:
-            self.ufactor_glazing = 1.82
-        elif self.glazing_type == 21:
-            self.ufactor_glazing = 1.99
-        elif self.glazing_type == 22:
-            self.ufactor_glazing = 1.53
-        elif self.glazing_type == 23:
-            self.ufactor_glazing = 2.33
-        elif self.glazing_type == 24:
-            self.ufactor_glazing = 1.7
-        elif self.glazing_type == 25:
-            self.ufactor_glazing = 1.87
-        elif self.glazing_type == 26:
-            self.ufactor_glazing = 1.42
-        elif self.glazing_type == 27:
-            self.ufactor_glazing = 2.16
-        elif self.glazing_type == 28:
-            self.ufactor_glazing = 1.76
-        elif self.glazing_type == 29:
-            self.ufactor_glazing = 1.93
-        elif self.glazing_type == 30:
-            self.ufactor_glazing = 1.65
-        elif self.glazing_type == 31:
-            self.ufactor_glazing = 1.87
-        elif self.glazing_type == 32:
-            self.ufactor_glazing = 1.42
-        elif self.glazing_type == 33:
-            self.ufactor_glazing = 1.59
-        elif self.glazing_type == 34:
-            self.ufactor_glazing = 1.25
-        elif self.glazing_type == 35:
-            self.ufactor_glazing = 1.65
-        elif self.glazing_type == 36:
-            self.ufactor_glazing = 1.14
-        elif self.glazing_type == 37:
-            self.ufactor_glazing = 1.31
-        elif self.glazing_type == 38:
-            self.ufactor_glazing = 0.97
-        elif self.glazing_type == 39:
-            self.ufactor_glazing = 1.53
-        elif self.glazing_type == 40:
-            self.ufactor_glazing = 1.02
-        elif self.glazing_type == 41:
-            self.ufactor_glazing = 1.19
-        elif self.glazing_type == 42:
-            self.ufactor_glazing = 0.8
-        elif self.glazing_type == 43:
-            self.ufactor_glazing = 1.25
-        elif self.glazing_type == 44:
-            self.ufactor_glazing = 0.85
-        elif self.glazing_type == 45:
-            self.ufactor_glazing = 0.97
-        elif self.glazing_type == 46:
-            self.ufactor_glazing = 0.68
-        else:
-            self.ufactor_glazing = 0.68
-        return self.ufactor_glazing
-
     def u_factor_installation_func(self):
         self.glazing_types = self.comboBox.currentIndex()
         self.installation_type = self.comboBox_2.currentIndex()
@@ -2925,9 +2825,6 @@ class Ui_Dialog(object):
             else:
                 self.ufactor_installation = 1.43
         return self.ufactor_installation
-
-    def reset_fenestration_u_factor_glass(self):
-        return self.comboBox.setCurrentIndex(0)
 
     def reset_fenestration_u_factor_installation(self):
         return self.comboBox_2.setCurrentIndex(0)

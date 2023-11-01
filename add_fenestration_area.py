@@ -8,9 +8,6 @@ class Ui_Dialog(object):
         Dialog.resize(500, 400)
         Dialog.setMinimumSize(QtCore.QSize(500, 400))
         Dialog.setMaximumSize(QtCore.QSize(550, 400))
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("srcs/oven_6301569.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        Dialog.setWindowIcon(icon)
         self.verticalLayoutWidget = QtWidgets.QWidget(parent=Dialog)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(19, 10, 201, 251))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
@@ -29,19 +26,6 @@ class Ui_Dialog(object):
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
-        self.label_4 = QtWidgets.QLabel(parent=self.verticalLayoutWidget)
-        font = QtGui.QFont()
-        font.setBold(True)
-        self.label_4.setFont(font)
-        self.label_4.setObjectName("label_4")
-        self.verticalLayout.addWidget(self.label_4)
-        self.label_6 = QtWidgets.QLabel(parent=self.verticalLayoutWidget)
-        self.label_6.setMaximumSize(QtCore.QSize(200, 200))
-        font = QtGui.QFont()
-        font.setBold(True)
-        self.label_6.setFont(font)
-        self.label_6.setObjectName("label_6")
-        self.verticalLayout.addWidget(self.label_6)
         self.label_3 = QtWidgets.QLabel(parent=self.verticalLayoutWidget)
         font = QtGui.QFont()
         font.setBold(True)
@@ -357,24 +341,17 @@ class Ui_Dialog(object):
         self.pushButton_10.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.pushButton_10.setObjectName("pushButton_10")
         self.lineEdit = QtWidgets.QLineEdit(parent=Dialog)
-        self.lineEdit.setGeometry(QtCore.QRect(220, 23, 113, 24))
+        self.lineEdit.setGeometry(QtCore.QRect(220, 40, 113, 24))
         self.lineEdit.setObjectName("lineEdit")
-        self.lineEdit_2 = QtWidgets.QLineEdit(parent=Dialog)
-        self.lineEdit_2.setGeometry(QtCore.QRect(220, 175, 113, 24))
-        self.lineEdit_2.setReadOnly(True)
-        self.lineEdit_2.setObjectName("lineEdit_2")
         self.pushButton_5 = QtWidgets.QPushButton(parent=Dialog)
-        self.pushButton_5.setGeometry(QtCore.QRect(370, 202, 111, 24))
+        self.pushButton_5.setGeometry(QtCore.QRect(370, 210, 111, 24))
         self.pushButton_5.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.pushButton_5.setObjectName("pushButton_5")
         self.lineEdit_3 = QtWidgets.QLineEdit(parent=Dialog)
-        self.lineEdit_3.setGeometry(QtCore.QRect(220, 74, 113, 24))
+        self.lineEdit_3.setGeometry(QtCore.QRect(220, 125, 113, 24))
         self.lineEdit_3.setObjectName("lineEdit_3")
-        self.lineEdit_4 = QtWidgets.QLineEdit(parent=Dialog)
-        self.lineEdit_4.setGeometry(QtCore.QRect(220, 124, 113, 24))
-        self.lineEdit_4.setObjectName("lineEdit_4")
         self.lineEdit_5 = QtWidgets.QLineEdit(parent=Dialog)
-        self.lineEdit_5.setGeometry(QtCore.QRect(220, 229, 113, 24))
+        self.lineEdit_5.setGeometry(QtCore.QRect(220, 211, 113, 24))
         self.lineEdit_5.setReadOnly(True)
         self.lineEdit_5.setObjectName("lineEdit_5")
 
@@ -384,15 +361,11 @@ class Ui_Dialog(object):
     def fenestration_properties_list(self):
         self.name = self.lineEdit.text()
         self.f_area = self.lineEdit_3.text()
-        self.i_area = self.lineEdit_4.text()
-        self.f_u = self.lineEdit_2.text()
         self.i_u = self.lineEdit_5.text()
         items = []
 
         items.append(self.name)
         items.append(self.f_area)
-        items.append(self.i_area)
-        items.append(self.f_u)
         items.append(self.i_u)
         return items
 
@@ -400,20 +373,16 @@ class Ui_Dialog(object):
     def check_line(self):
         self.t1 = self.lineEdit.text()
         self.t2 = self.lineEdit_3.text()
-        self.t3 = self.lineEdit_4.text()
-        self.t4 = self.lineEdit_2.text()
-        self.t5 = self.lineEdit_5.text()
+        self.t3 = self.lineEdit_5.text()
 
-        if (self.t1 != '' and self.t2 != '' and self.t3 != '' and self.t4 != '' and self.t5 != ''):
-            return (self.t1, self.t2, self.t3, self.t4, self.t5)
+        if (self.t1 != '' and self.t2 != '' and self.t3 != ''):
+            return (self.t1, self.t2, self.t3)
         else:
-            return (-1, -1, -1, -1, -1)
+            return (-1, -1, -1)
 
     def clear_data(self):
         self.lineEdit.clear()
         self.lineEdit_3.clear()
-        self.lineEdit_4.clear()
-        self.lineEdit_2.clear()
         self.lineEdit_5.clear()
 
     def retranslateUi(self, Dialog):
@@ -421,19 +390,9 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(_translate("Dialog", "Add Fenestration Area Properties"))
         self.label_2.setText(_translate("Dialog", "Fenestration Name :"))
         self.label.setText(_translate("Dialog", "Fenestration Area (m2) :"))
-        self.label_4.setText(_translate("Dialog", "Installation Area (m2) :"))
-        self.label_6.setText(_translate("Dialog", "Fenestration U factor (W/m2k) :"))
-        self.label_3.setText(_translate("Dialog", "Installation U factor (W/m2k) :"))
+        self.label_3.setText(_translate("Dialog", "Fenestration U factor (W/m2k) :"))
         self.pushButton_9.setText(_translate("Dialog", "Clear"))
         self.pushButton_10.setText(_translate("Dialog", "Save"))
         self.pushButton_5.setText(_translate("Dialog", "Calculation"))
 
 
-# if __name__ == "__main__":
-#     import sys
-#     app = QtWidgets.QApplication(sys.argv)
-#     Dialog = QtWidgets.QDialog()
-#     ui = Ui_Dialog()
-#     ui.setupUi(Dialog)
-#     Dialog.show()
-#     sys.exit(app.exec())

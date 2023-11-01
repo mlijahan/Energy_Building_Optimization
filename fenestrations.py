@@ -9,13 +9,10 @@ class Ui_Dialog(object):
         Dialog.resize(640, 480)
         Dialog.setMinimumSize(QtCore.QSize(640, 480))
         Dialog.setMaximumSize(QtCore.QSize(640, 480))
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("srcs/oven_6301569.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        Dialog.setWindowIcon(icon)
         self.tableWidget = QtWidgets.QTableWidget(parent=Dialog)
         self.tableWidget.setGeometry(QtCore.QRect(75, 100, 491, 281))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setColumnCount(3)
         self.tableWidget.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
@@ -23,10 +20,6 @@ class Ui_Dialog(object):
         self.tableWidget.setHorizontalHeaderItem(1, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(4, item)
         self.tableWidget.horizontalHeader().setDefaultSectionSize(200)
         self.line = QtWidgets.QFrame(parent=Dialog)
         self.line.setGeometry(QtCore.QRect(0, 70, 641, 16))
@@ -93,16 +86,7 @@ class Ui_Dialog(object):
         for row in range(self.ROW):
             self.fenestration_u.append(float(self.tableWidget.item(row, 2).text()))
         self.fenestration_u_area = np.array(self.fenestration_area) * np.array(self.fenestration_u)
-        self.installation_area = []
-        self.ROW = self.tableWidget.rowCount()
-        for row in range(self.ROW):
-            self.installation_area.append(float(self.tableWidget.item(row, 3).text()))
-        self.installation_u = []
-        for row in range(self.ROW):
-            self.installation_u.append(float(self.tableWidget.item(row, 4).text()))
-        self.installation_u_area = np.array(self.installation_area) * np.array(self.installation_u)
-        self.total_u_fenestration_area = self.fenestration_u_area + self.installation_u_area
-        self.total_u = sum(self.total_u_fenestration_area)
+        self.total_u = sum(self.fenestration_u_area)
         return np.round(self.total_u,2)
 
     def delete_row_fenestration(self):
@@ -127,10 +111,6 @@ class Ui_Dialog(object):
         item.setText(_translate("Dialog", "Net Fenestration Area (m2)"))
         item = self.tableWidget.horizontalHeaderItem(2)
         item.setText(_translate("Dialog", "U (W/m2K) of Fenestration Area"))
-        item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("Dialog", "Installation Area (m2)"))
-        item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("Dialog", "U (W/m2K) of Installation Area"))
         self.label.setText(_translate("Dialog", "Envelope Name :"))
         self.pushButton.setText(_translate("Dialog", "Save"))
         self.pushButton_2.setText(_translate("Dialog", "Calculation"))
@@ -140,12 +120,3 @@ class Ui_Dialog(object):
         self.label_2.setText(_translate("Dialog", "U- factor of total Area :"))
         self.pushButton_6.setText(_translate("Dialog", "Clear"))
 
-
-# if __name__ == "__main__":
-#     import sys
-#     app = QtWidgets.QApplication(sys.argv)
-#     Dialog = QtWidgets.QDialog()
-#     ui = Ui_Dialog()
-#     ui.setupUi(Dialog)
-#     Dialog.show()
-#     sys.exit(app.exec())
