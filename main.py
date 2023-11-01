@@ -48,7 +48,7 @@ c = conn.cursor()
 
 # Drop the fenestration_properties table if already exists.
 c.execute("DROP TABLE IF EXISTS fenestration_properties")
-#Create a table
+#Create a new table
 c.execute(""" CREATE TABLE if not exists fenestration_properties(
     fenestration_id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
     fenestration_name text,
