@@ -850,7 +850,7 @@ class Ui_rfr(object):
 
         # Add stuf to the table
         c.execute("INSERT INTO fenestration_properties (fenestration_name,fenestration_area_m2,"
-                      "fenestration_u) VALUES (?,?,?,?,?)",
+                      "fenestration_u) VALUES (?,?,?)",
 
                       (items[0], items[1], items[2])
                       )
@@ -1072,7 +1072,7 @@ class Ui_rfr(object):
         return self.net_envelope
 
     def fenestration_installation_u_factors(self):
-        self.installation_u_fact = fenestration_area.lineEdit_2.setText(str(fenestration_ufactor.u_factor_installation_func()))
+        self.installation_u_fact = fenestration_area.lineEdit_5.setText(str(fenestration_ufactor.u_factor_installation_func()))
         return self.installation_u_fact
 
     def fenestration_area_u(self):
@@ -1171,7 +1171,7 @@ class Ui_rfr(object):
 
 
     def door_1_u_factor(self):
-        self.doors_1_u_fact = fenestration_area.lineEdit_2.setText(str(door01.door1_u_factors()))
+        self.doors_1_u_fact = fenestration_area.lineEdit_5.setText(str(door01.door1_u_factors()))
         return self.doors_1_u_fact
 
     def door_1_insu_u_factor(self):
@@ -1179,7 +1179,7 @@ class Ui_rfr(object):
         return self.doors_1_instal_u_fact
 
     def door_2_u_factor(self):
-        self.doors_2_u_fact = fenestration_area.lineEdit_2.setText(str(door02.door2_u_factors()))
+        self.doors_2_u_fact = fenestration_area.lineEdit_5.setText(str(door02.door2_u_factors()))
         return self.doors_2_u_fact
 
     def door_2_ins_u_factor(self):
@@ -1187,7 +1187,7 @@ class Ui_rfr(object):
         return self.doors_2_instal_u_fact
 
     def door_3_u_factor(self):
-        self.doors_3_u_fact = fenestration_area.lineEdit_2.setText(str(door03.door3_u_factors()))
+        self.doors_3_u_fact = fenestration_area.lineEdit_5.setText(str(door03.door3_u_factors()))
         return self.doors_3_u_fact
 
     def door_3_ins_u_factor(self):
@@ -1195,7 +1195,7 @@ class Ui_rfr(object):
         return self.doors_3_instal_u_fact
 
     def door_4_u_factor(self):
-        self.doors_4_u_fact = fenestration_area.lineEdit_2.setText(str(door04.door4_u_factors()))
+        self.doors_4_u_fact = fenestration_area.lineEdit_5.setText(str(door04.door4_u_factors()))
         return self.doors_4_u_fact
 
     def door_4_ins_u_factor(self):
@@ -1296,6 +1296,7 @@ if __name__ == "__main__":
     infiltration.pushButton.clicked.connect(lambda: infiltration.reset_area_height())
     infiltration.pushButton.clicked.connect(lambda: infiltration.reset_construction_type())
     infiltration.pushButton_2.clicked.connect(lambda: ui.infiltration_flow())
+    infiltration.pushButton_2.clicked.connect(lambda: dialog_infiltration.close())
     ##================================================================= Add Ventilation
     ventilation = vn.Ui_Dialog()
     dialog_ventilation = QtWidgets.QDialog()
@@ -1304,6 +1305,7 @@ if __name__ == "__main__":
     new_zone.pushButton_5.clicked.connect(lambda: ui.ventilationload())
     ventilation.pushButton.clicked.connect(lambda: ventilation.delete_line())
     ventilation.pushButton_2.clicked.connect(lambda: ui.ventilation_flow())
+    ventilation.pushButton_2.clicked.connect(lambda: dialog_ventilation.close())
     new_zone.pushButton_11.clicked.connect(lambda: ui.show_total_heating_load())
     ###================================================================= Add New Envelope
     add_envelopes = adenvp.Ui_Dialog()
@@ -1366,6 +1368,7 @@ if __name__ == "__main__":
     add_hi.setupUi(dialog_hi)
     add_envelopes_properties.pushButton_4.clicked.connect(lambda: dialog_hi.exec())
     add_hi.pushButton_2.clicked.connect(lambda: ui.indoor())
+    add_hi.pushButton_2.clicked.connect(lambda: dialog_hi.close())
     add_hi.pushButton.clicked.connect(lambda: add_hi.reset_position_surface())
     add_hi.pushButton.clicked.connect(lambda: add_hi.reset_surface_emittance())
     ##========================================================== Add Outdoor surface heat transfer (kcal/m2hC)
