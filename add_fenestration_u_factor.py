@@ -2827,7 +2827,8 @@ class Ui_Dialog(object):
         return self.ufactor_installation
 
     def reset_fenestration_u_factor_installation(self):
-        return self.comboBox_2.setCurrentIndex(0)
+        self.comboBox_2.setCurrentIndex(0)
+        self.comboBox.setCurrentIndex(0)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
