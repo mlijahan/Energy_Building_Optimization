@@ -7,12 +7,15 @@ There are lots of commercial software to do it, but most need to simulate the bu
 In addition, this app is operational in the estimation of the effect of fenestration sizes, types, and insulation layers of envelopes of the buildings in decreasing or increasing the heating load at the same time.
 
 
-https://github.com/mlijahan/Heating_Load_Estimator_for_Buildings/assets/89294710/47fc1b31-db8e-406f-9a10-dc4b5710760f
+![Untitled](https://github.com/mlijahan/Heating_Load_Estimator_for_Buildings/assets/89294710/8ba34316-85d1-46ca-a88f-0d4dccc9a351)
+
 
 # Installation
 
 You can readily download source codes and the main.exe file and Source code(zip) folder from the below link:
-![Untitled](https://github.com/mlijahan/Heating_Load_Estimator_for_Buildings/releases/tag/v0.1.0)  
+
+https://github.com/mlijahan/Heating_Load_Estimator_for_Buildings/assets/89294710/47fc1b31-db8e-406f-9a10-dc4b5710760f
+
 then, extract the zip folder and copy heating_load.db and srcs folder into the same directory as main.exe file; Now you can run main.exe file.
 
 # Instructor
