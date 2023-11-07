@@ -491,7 +491,7 @@ class Ui_Dialog(object):
         self.label_9.setText(_translate("Dialog", "total Envelope U factor (W/m2K) * A (m2) :"))
         self.label_4.setText(_translate("Dialog", "total Fenestration U factor (W/m2K) * A (m2) :"))
         self.label_10.setText(_translate("Dialog", "Total Heat Loss Coefficient (W/m2K) * A (m2) :"))
-        self.pushButton_9.setText(_translate("Dialog", "Close"))
+        self.pushButton_9.setText(_translate("Dialog", "Clear"))
         self.pushButton_10.setText(_translate("Dialog", "Save"))
         self.pushButton_3.setText(_translate("Dialog", "Add"))
         self.pushButton_5.setText(_translate("Dialog", "Add"))
@@ -501,11 +501,3 @@ class Ui_Dialog(object):
         self.comboBox.setItemText(2, _translate("Dialog", "Ceiling"))
 
 
-# if __name__ == "__main__":
-#     import sys
-#     app = QtWidgets.QApplication(sys.argv)
-#     Dialog = QtWidgets.QDialog()
-#     ui = Ui_Dialog()
-#     ui.setupUi(Dialog)
-#     Dialog.show()
-#     sys.exit(app.exec())

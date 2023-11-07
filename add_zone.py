@@ -1,7 +1,7 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-
+import numpy as np
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -530,7 +530,7 @@ class Ui_Dialog(object):
         self.totalheatingload = float(self.infiltration_load) + float(self.ventilation_load) + \
                                  float(self.conduvtivity_load) + float(self.miscellaneous_load) \
                                  + float(self.distribution_loss)
-        return self.totalheatingload
+        return np.round(self.totalheatingload,2)
 
     def zone_properties_list(self):
         self.zone_name = self.lineEdit_7.text()
